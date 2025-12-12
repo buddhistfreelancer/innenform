@@ -1,0 +1,34 @@
+<form id="contactForm" method="POST">
+  <label>Name</label>
+  <input type="text" name="name" required />
+
+  <label>Email</label>
+  <input type="email" name="email" required />
+
+  <label>Message</label>
+  <textarea name="message" required></textarea>
+
+  <button type="submit">Send</button>
+</form>
+
+<div id="response"></div>
+
+<script>
+document.getElementById("contactForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(e.target);
+  const data = Object.fromEntries(formData.entries());
+
+  const res = await fetch("/api/submit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+
+  const result = await res.json();
+  document.getElementById("response").innerText = result.message;
+});
+</script>
